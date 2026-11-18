@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  body { font-family: Arial, Helvetica, sans-serif; color: #222; font-size: 13px; }
+  .header { border-bottom: 3px solid #2b5cab; padding-bottom: 10px; margin-bottom: 20px; }
+  .header h1 { margin: 0; color: #2b5cab; font-size: 22px; }
+  .meta { color: #666; font-size: 12px; margin-top: 4px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+  th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+  th { background: #f2f5fa; }
+  .footer { margin-top: 30px; font-size: 11px; color: #888; text-align: center; }
+</style>
+</head>
+<body>
+  <div class="header">
+    <h1>{{title}}</h1>
+    <div class="meta">{{#if date}}Date: {{date}}{{/if}} {{#if ref}}&nbsp;|&nbsp; Ref: {{ref}}{{/if}}</div>
+  </div>
+
+  {{#if content}}<div>{{{content}}}</div>{{/if}}
+
+  {{#if rows}}
+  <table>
+    <thead><tr>{{#each columns}}<th>{{this}}</th>{{/each}}</tr></thead>
+    <tbody>
+      {{#each rows}}<tr>{{#each this}}<td>{{this}}</td>{{/each}}</tr>{{/each}}
+    </tbody>
+  </table>
+  {{/if}}
+
+  {{#if footer}}<div class="footer">{{footer}}</div>{{/if}}
+</body>
+</html>

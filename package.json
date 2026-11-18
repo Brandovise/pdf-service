@@ -1,0 +1,14 @@
+{
+  "name": "pdf-service",
+  "version": "1.0.0",
+  "description": "Apna PDF generator API - HTML ya template se PDF banao, kahin se bhi call karo",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "handlebars": "^4.7.8",
+    "puppeteer": "^25.18.0"
+  }
+}
