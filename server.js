@@ -7,18 +7,24 @@ const fs = require('fs');
 const path = require('path');
 
 const PORT = process.env.PORT || 3000;
-const API_KEY = process.env.API_KEY || '';           // zaroor set karna
+const API_KEY = process.env.API_KEY || '';           // required
 const TEMPLATES_DIR = path.join(__dirname, 'templates');
 
 const app = express();
 app.use(express.json({ limit: '20mb' }));
 
-// ---------- Auth: har request par x-api-key header chahiye ----------
+// ---------- Auth: every request except /health needs the x-api-key header ----------
+// Fail closed: without API_KEY the service refuses to start (it would be open to everyone).
+if (API_KEY.length < 16) {
+  console.error('API_KEY missing or shorter than 16 characters. Set a long secret as env var API_KEY.');
+  process.exit(1);
+}
+const crypto = require('crypto');
+const keyHash = crypto.createHash('sha256').update(API_KEY).digest();
 app.use((req, res, next) => {
   if (req.path === '/health') return next();
-  if (!API_KEY) return next(); // local testing ke liye
-  const key = req.get('x-api-key') || req.query.api_key;
-  if (key !== API_KEY) return res.status(401).json({ error: 'Invalid API key' });
+  const given = crypto.createHash('sha256').update(String(req.get('x-api-key') || '')).digest();
+  if (!crypto.timingSafeEqual(given, keyHash)) return res.status(401).json({ error: 'Invalid API key' });
   next();
 });
 
